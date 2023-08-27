@@ -1,10 +1,17 @@
 $(shell echo UID=$(shell id -u) > .env)
 
+ifneq ($(shell docker compose version 2>/dev/null),)
+  DOCKER_COMPOSE=docker compose
+else
+  DOCKER_COMPOSE=docker-compose
+endif
+
+
 build:
-	docker-compose build app
+	$(DOCKER_COMPOSE) build app
 
 run-dev:
-	docker-compose up app
+	$(DOCKER_COMPOSE) up app
 
 shell:
-	docker-compose exec app bash
+	$(DOCKER_COMPOSE) exec app bash
