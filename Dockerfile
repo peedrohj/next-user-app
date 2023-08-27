@@ -1,4 +1,4 @@
-FROM node:14.17.0-slim as base
+FROM node:20.5.1 as base
 
 # Install GCC, Make, libpq-dev (for psicopg) and procps
 RUN apt-get update
@@ -16,19 +16,16 @@ FROM base as local
 ARG UID
 
 # Install base dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
     git \
     curl \
     wget \
     openssh-client
 
-# Install dependencies
-RUN npm i -g @nestjs/cli
-
 # Configure node user
 RUN usermod -u ${UID} node 
 USER node
-WORKDIR /home/node/app
+WORKDIR /home/node/app/code
 
 CMD [ "tail", "-f" , "/dev/null" ]
 
