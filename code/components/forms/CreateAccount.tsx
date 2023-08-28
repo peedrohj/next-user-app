@@ -56,8 +56,8 @@ function CreateAccount() {
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>Create your user</CardTitle>
-        <CardDescription>Create your new user in one-click.</CardDescription>
+        <CardTitle>Create your account</CardTitle>
+        <CardDescription>Create your new account in one-click.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
