@@ -12,4 +12,5 @@ services:
     command: sh ../.docker/scripts/run.sh
     volumes:
       - ./:/home/node/app
-
+    ports:
+      - "3000:3000"

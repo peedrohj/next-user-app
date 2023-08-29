@@ -7,14 +7,12 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createUser } from "@/lib/actions/createUser.actions";
 import {
   Card,
   CardContent,
@@ -24,10 +22,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import { validateUser } from "@/lib/actions/validateUser.actions";
+
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
   email: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
@@ -36,22 +33,24 @@ const formSchema = z.object({
   }),
 });
 
-function CreateAccount() {
+function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  function onSubmit({ name, email, password }: z.infer<typeof formSchema>) {
-    createUser({
-      name,
+  async function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+    const isValidUser = await validateUser({
       email,
       password,
     });
+
+    console.log("isValidUser: ", isValidUser);
+
+    if (isValidUser) push("/");
   }
 
   const { push } = useRouter();
@@ -69,21 +68,6 @@ function CreateAccount() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1.5">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your name" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="email"
@@ -125,4 +109,4 @@ function CreateAccount() {
   );
 }
 
-export default CreateAccount;
+export default Login;
